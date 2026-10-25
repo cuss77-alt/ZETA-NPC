@@ -1,0 +1,903 @@
+-- ========================================================
+--    ZETA HUB V1.5 - ZOMBIE & NPC DESTROYER EDITION
+-- ========================================================
+
+local LinkvertiseURL = "https://link-hub.net/10082672/H7YSmQVixmzs"
+local CorrectKey = "ZETA-PRO-2026-V1.5"
+local DiscordInvite = "discord.gg/NWkDhcG2p"
+
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+local VirtualUser = game:GetService("VirtualUser")
+
+-- // 1. PANTALLA DE CARGA RGB HACKER \\ --
+local LoadGui = Instance.new("ScreenGui", CoreGui)
+LoadGui.Name = "ZetaLoadingRGB"
+LoadGui.ResetOnSpawn = false
+
+local LoadFrame = Instance.new("Frame", LoadGui)
+LoadFrame.BackgroundColor3 = Color3.fromRGB(10, 12, 16)
+LoadFrame.Position = UDim2.new(0.5, -180, 0.5, -135)
+LoadFrame.Size = UDim2.new(0, 360, 0, 270)
+Instance.new("UICorner", LoadFrame).CornerRadius = UDim.new(0, 16)
+
+local RGBStroke = Instance.new("UIStroke", LoadFrame)
+RGBStroke.Thickness = 3
+RGBStroke.Color = Color3.fromRGB(0, 230, 118)
+
+task.spawn(function()
+    local hue = 0
+    while LoadFrame and LoadFrame.Parent do
+        hue = (hue + 0.02) % 1
+        RGBStroke.Color = Color3.fromHSV(hue, 1, 1)
+        task.wait(0.03)
+    end
+end)
+
+local LoadTitle = Instance.new("TextLabel", LoadFrame)
+LoadTitle.BackgroundTransparency = 1
+LoadTitle.Position = UDim2.new(0, 0, 0, 12)
+LoadTitle.Size = UDim2.new(1, 0, 0, 25)
+LoadTitle.Font = Enum.Font.GothamBold
+LoadTitle.Text = "⚡ ZETA ZOMBIE DESTROYER V1.5 ⚡"
+LoadTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+LoadTitle.TextSize = 13
+
+local AvatarImg = Instance.new("ImageLabel", LoadFrame)
+AvatarImg.BackgroundTransparency = 1
+AvatarImg.Position = UDim2.new(0.06, 0, 0.22, 0)
+AvatarImg.Size = UDim2.new(0, 52, 0, 52)
+pcall(function()
+    AvatarImg.Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+end)
+Instance.new("UICorner", AvatarImg).CornerRadius = UDim.new(1, 0)
+local AvatarStroke = Instance.new("UIStroke", AvatarImg)
+AvatarStroke.Color = Color3.fromRGB(0, 230, 118)
+AvatarStroke.Thickness = 2
+
+local UserInfo = Instance.new("TextLabel", LoadFrame)
+UserInfo.BackgroundTransparency = 1
+UserInfo.Position = UDim2.new(0.25, 0, 0.20, 0)
+UserInfo.Size = UDim2.new(0.7, 0, 0, 60)
+UserInfo.Font = Enum.Font.GothamSemibold
+UserInfo.Text = "• Usuario: " .. LocalPlayer.Name .. "\n• ID: " .. LocalPlayer.UserId .. "\n• Modo: Cazador de Zombis"
+UserInfo.TextColor3 = Color3.fromRGB(200, 200, 200)
+UserInfo.TextSize, UserInfo.TextXAlignment = 11, Enum.TextXAlignment.Left
+
+local TikTokTag = Instance.new("TextLabel", LoadFrame)
+TikTokTag.BackgroundTransparency = 1
+TikTokTag.Position = UDim2.new(0, 0, 0.48, 0)
+TikTokTag.Size = UDim2.new(1, 0, 0, 30)
+TikTokTag.Font = Enum.Font.GothamBold
+TikTokTag.Text = "🔥 TIKTOK: @ZETA HUB 🔥"
+TikTokTag.TextColor3 = Color3.fromRGB(0, 255, 128)
+TikTokTag.TextSize = 15
+
+local NotifBox = Instance.new("TextLabel", LoadFrame)
+NotifBox.BackgroundColor3 = Color3.fromRGB(25, 30, 38)
+NotifBox.Position = UDim2.new(0.08, 0, 0.62, 0)
+NotifBox.Size = UDim2.new(0.84, 0, 0, 28)
+NotifBox.Font = Enum.Font.GothamBold
+NotifBox.Text = "🛡️ Calibrando radar letal de zombis..."
+NotifBox.TextColor3 = Color3.fromRGB(255, 215, 0)
+NotifBox.TextSize = 10
+Instance.new("UICorner", NotifBox).CornerRadius = UDim.new(0, 6)
+
+task.spawn(function()
+    task.wait(3.5)
+    NotifBox.Text = "⚡ Sincronizando Auto-Shoot masivo..."
+    NotifBox.TextColor3 = Color3.fromRGB(0, 230, 118)
+    task.wait(3.5)
+    NotifBox.Text = "🚀 ¡Listo para limpiar hordas!"
+    NotifBox.TextColor3 = Color3.fromRGB(0, 191, 255)
+end)
+
+local BarBackground = Instance.new("Frame", LoadFrame)
+BarBackground.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+BarBackground.Position = UDim2.new(0.08, 0, 0.82, 0)
+BarBackground.Size = UDim2.new(0.84, 0, 0, 10)
+Instance.new("UICorner", BarBackground).CornerRadius = UDim.new(1, 0)
+
+local BarFill = Instance.new("Frame", BarBackground)
+BarFill.BackgroundColor3 = Color3.fromRGB(0, 230, 118)
+BarFill.Size = UDim2.new(0, 0, 1, 0)
+Instance.new("UICorner", BarFill).CornerRadius = UDim.new(1, 0)
+
+TweenService:Create(BarFill, TweenInfo.new(10, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+task.wait(10)
+LoadGui:Destroy()
+
+-- // 2. KEY SYSTEM ESTILO HACKER \\ --
+local KeySystemUI = Instance.new("ScreenGui", CoreGui)
+KeySystemUI.Name = "ZetaKeyHacker"
+KeySystemUI.ResetOnSpawn = false
+
+local KeyFrame = Instance.new("Frame", KeySystemUI)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(10, 15, 12)
+KeyFrame.Position = UDim2.new(0.5, -170, 0.5, -130)
+KeyFrame.Size = UDim2.new(0, 340, 0, 240)
+KeyFrame.Active = true
+KeyFrame.Draggable = true
+Instance.new("UICorner", KeyFrame).CornerRadius = UDim.new(0, 12)
+
+local HackerStroke = Instance.new("UIStroke", KeyFrame)
+HackerStroke.Thickness = 2
+HackerStroke.Color = Color3.fromRGB(0, 255, 65)
+
+task.spawn(function()
+    local h = 0
+    while KeyFrame and KeyFrame.Parent do
+        h = (h + 0.05) % 1
+        HackerStroke.Color = Color3.fromHSV(h, 1, 0.8)
+        task.wait(0.05)
+    end
+end)
+
+local KeyTitle = Instance.new("TextLabel", KeyFrame)
+KeyTitle.BackgroundTransparency = 1
+KeyTitle.Position = UDim2.new(0, 0, 0, 12)
+KeyTitle.Size = UDim2.new(1, 0, 0, 25)
+KeyTitle.Font = Enum.Font.Code
+KeyTitle.Text = "[ SYSTEM_AUTH // ZETA_HUB ]"
+KeyTitle.TextColor3 = Color3.fromRGB(0, 255, 65)
+KeyTitle.TextSize = 13
+
+local KeySubtitle = Instance.new("TextLabel", KeyFrame)
+KeySubtitle.BackgroundTransparency = 1
+KeySubtitle.Position = UDim2.new(0, 0, 0, 35)
+KeySubtitle.Size = UDim2.new(1, 0, 0, 20)
+KeySubtitle.Font = Enum.Font.Code
+KeySubtitle.Text = "> Inserta la Key de acceso autorizado:"
+KeySubtitle.TextColor3 = Color3.fromRGB(150, 200, 150)
+KeySubtitle.TextSize = 10
+
+local KeyInput = Instance.new("TextBox", KeyFrame)
+KeyInput.BackgroundColor3 = Color3.fromRGB(15, 25, 18)
+KeyInput.Position = UDim2.new(0.1, 0, 0.35, 0)
+KeyInput.Size = UDim2.new(0.8, 0, 0, 36)
+KeyInput.Font = Enum.Font.Code
+KeyInput.PlaceholderText = "ZETA-PRO-..."
+KeyInput.Text = ""
+KeyInput.TextColor3 = Color3.fromRGB(0, 255, 65)
+KeyInput.TextSize = 12
+Instance.new("UICorner", KeyInput).CornerRadius = UDim.new(0, 6)
+Instance.new("UIStroke", KeyInput).Color = Color3.fromRGB(0, 200, 50)
+
+local VerifyBtn = Instance.new("TextButton", KeyFrame)
+VerifyBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 50)
+VerifyBtn.Position = UDim2.new(0.1, 0, 0.60, 0)
+VerifyBtn.Size = UDim2.new(0.8, 0, 0, 35)
+VerifyBtn.Font = Enum.Font.Code
+VerifyBtn.Text = "[ ACCEDER AL SISTEMA ]"
+VerifyBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+VerifyBtn.TextSize = 12
+Instance.new("UICorner", VerifyBtn).CornerRadius = UDim.new(0, 6)
+
+local GetKeyBtn = Instance.new("TextButton", KeyFrame)
+GetKeyBtn.BackgroundColor3 = Color3.fromRGB(20, 30, 22)
+GetKeyBtn.Position = UDim2.new(0.1, 0, 0.80, 0)
+GetKeyBtn.Size = UDim2.new(0.8, 0, 0, 30)
+GetKeyBtn.Font = Enum.Font.Code
+GetKeyBtn.Text = "Obtener Key (Linkvertise)"
+GetKeyBtn.TextColor3 = Color3.fromRGB(0, 230, 118)
+GetKeyBtn.TextSize = 11
+Instance.new("UICorner", GetKeyBtn).CornerRadius = UDim.new(0, 6)
+
+GetKeyBtn.MouseButton1Click:Connect(function()
+    if setclipboard then setclipboard(LinkvertiseURL) end
+end)
+
+VerifyBtn.MouseButton1Click:Connect(function()
+    if KeyInput.Text == CorrectKey then
+        KeySystemUI:Destroy()
+
+        task.spawn(function()
+            task.wait(120)
+            pcall(function()
+                game.StarterGui:SetCore("SendNotification", {
+                    Title = "⚡ ZETA HUB COMMUNITY",
+                    Text = "Puedes encontrarnos en TikTok como @zeta hub\n¡Gracias por el apoyo!",
+                    Duration = 10
+                })
+            end)
+        end)
+
+        -- // 3. MENÚ PRINCIPAL V1.5 FIJO (360x380 PX) \\ --
+        local HubGui = Instance.new("ScreenGui", CoreGui)
+        HubGui.Name = "ZetaMenuV1_5"
+        HubGui.ResetOnSpawn = false
+
+        local ToggleLogo = Instance.new("TextButton", HubGui)
+        ToggleLogo.BackgroundColor3 = Color3.fromRGB(15, 18, 22)
+        ToggleLogo.Position = UDim2.new(0.02, 0, 0.15, 0)
+        ToggleLogo.Size = UDim2.new(0, 45, 0, 45)
+        ToggleLogo.Active = true
+        ToggleLogo.Draggable = true
+        ToggleLogo.Font = Enum.Font.FredokaOne
+        ToggleLogo.Text = "ℤ"
+        ToggleLogo.TextColor3 = Color3.fromRGB(0, 230, 118)
+        ToggleLogo.TextSize = 24
+        Instance.new("UICorner", ToggleLogo).CornerRadius = UDim.new(1, 0)
+        Instance.new("UIStroke", ToggleLogo).Color = Color3.fromRGB(0, 230, 118)
+
+        local MainMenu = Instance.new("Frame", HubGui)
+        MainMenu.BackgroundColor3 = Color3.fromRGB(12, 15, 20)
+        MainMenu.Position = UDim2.new(0.5, -180, 0.5, -190)
+        MainMenu.Size = UDim2.new(0, 360, 0, 380)
+        MainMenu.Active = true
+        MainMenu.Draggable = false
+        Instance.new("UICorner", MainMenu).CornerRadius = UDim.new(0, 14)
+        local MainStroke = Instance.new("UIStroke", MainMenu)
+        MainStroke.Thickness = 2
+        MainStroke.Color = Color3.fromRGB(0, 230, 118)
+
+        task.spawn(function()
+            while MainMenu and MainMenu.Parent do
+                TweenService:Create(MainMenu, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, -180, 0.5, -182)}):Play()
+                task.wait(2)
+                TweenService:Create(MainMenu, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {Position = UDim2.new(0.5, -180, 0.5, -198)}):Play()
+                task.wait(2)
+            end
+        end)
+
+        ToggleLogo.MouseButton1Click:Connect(function()
+            MainMenu.Visible = not MainMenu.Visible
+        end)
+
+        local HeaderAvatar = Instance.new("ImageLabel", MainMenu)
+        HeaderAvatar.BackgroundTransparency = 1
+        HeaderAvatar.Position = UDim2.new(0.03, 0, 0.02, 0)
+        HeaderAvatar.Size = UDim2.new(0, 30, 0, 30)
+        pcall(function()
+            HeaderAvatar.Image = Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+        end)
+        Instance.new("UICorner", HeaderAvatar).CornerRadius = UDim.new(1, 0)
+
+        local TitleLabel = Instance.new("TextLabel", MainMenu)
+        TitleLabel.BackgroundTransparency = 1
+        TitleLabel.Position = UDim2.new(0.13, 0, 0.02, 0)
+        TitleLabel.Size = UDim2.new(0.35, 0, 0, 30)
+        TitleLabel.Font = Enum.Font.GothamBold
+        TitleLabel.Text = "ZETA HUB V1.5"
+        TitleLabel.TextColor3 = Color3.fromRGB(0, 230, 118)
+        TitleLabel.TextSize, TitleLabel.TextXAlignment = 11, Enum.TextXAlignment.Left
+
+        local FPSLabel = Instance.new("TextLabel", MainMenu)
+        FPSLabel.BackgroundTransparency = 1
+        FPSLabel.Position = UDim2.new(0.50, 0, 0.02, 0)
+        FPSLabel.Size = UDim2.new(0.18, 0, 0, 30)
+        FPSLabel.Font = Enum.Font.Code
+        FPSLabel.Text = "FPS: 60"
+        FPSLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
+        FPSLabel.TextSize = 10
+
+        task.spawn(function()
+            local lastTick = tick()
+            local frames = 0
+            RunService.RenderStepped:Connect(function()
+                frames = frames + 1
+                if tick() - lastTick >= 1 then
+                    FPSLabel.Text = "FPS: " .. frames
+                    frames = 0
+                    lastTick = tick()
+                end
+            end)
+        end)
+
+        local Minimized = false
+        local MinBtn = Instance.new("TextButton", MainMenu)
+        MinBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
+        MinBtn.Position = UDim2.new(0.72, 0, 0.02, 0)
+        MinBtn.Size = UDim2.new(0, 28, 0, 28)
+        MinBtn.Font = Enum.Font.GothamBold
+        MinBtn.Text = "-"
+        MinBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        MinBtn.TextSize = 13
+        Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(0, 6)
+
+        local ConfirmBox = Instance.new("Frame", HubGui)
+        ConfirmBox.BackgroundColor3 = Color3.fromRGB(15, 18, 25)
+        ConfirmBox.Position = UDim2.new(0.5, -130, 0.5, -75)
+        ConfirmBox.Size = UDim2.new(0, 260, 0, 150)
+        ConfirmBox.Visible = false
+        Instance.new("UICorner", ConfirmBox).CornerRadius = UDim.new(0, 12)
+        Instance.new("UIStroke", ConfirmBox).Color = Color3.fromRGB(255, 50, 50)
+
+        local ConfirmText = Instance.new("TextLabel", ConfirmBox)
+        ConfirmText.BackgroundTransparency = 1
+        ConfirmText.Position = UDim2.new(0, 0, 0.1, 0)
+        ConfirmText.Size = UDim2.new(1, 0, 0, 40)
+        ConfirmText.Font = Enum.Font.GothamBold
+        ConfirmText.Text = "¿Estás seguro de cerrar el menú?"
+        ConfirmText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ConfirmText.TextSize = 12
+
+        local YesBtn = Instance.new("TextButton", ConfirmBox)
+        YesBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+        YesBtn.Position = UDim2.new(0.1, 0, 0.55, 0)
+        YesBtn.Size = UDim2.new(0.38, 0, 0, 35)
+        YesBtn.Font = Enum.Font.GothamBold
+        YesBtn.Text = "Estoy seguro"
+        YesBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        YesBtn.TextSize = 11
+        Instance.new("UICorner", YesBtn).CornerRadius = UDim.new(0, 6)
+        YesBtn.MouseButton1Click:Connect(function() HubGui:Destroy() end)
+
+        local NoBtn = Instance.new("TextButton", ConfirmBox)
+        NoBtn.BackgroundColor3 = Color3.fromRGB(50, 50, 60)
+        NoBtn.Position = UDim2.new(0.52, 0, 0.55, 0)
+        NoBtn.Size = UDim2.new(0.38, 0, 0, 35)
+        NoBtn.Font = Enum.Font.GothamBold
+        NoBtn.Text = "Cancelar"
+        NoBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        NoBtn.TextSize = 11
+        Instance.new("UICorner", NoBtn).CornerRadius = UDim.new(0, 6)
+        NoBtn.MouseButton1Click:Connect(function() ConfirmBox.Visible = false end)
+
+        local CloseBtn = Instance.new("TextButton", MainMenu)
+        CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+        CloseBtn.Position = UDim2.new(0.85, 0, 0.02, 0)
+        CloseBtn.Size = UDim2.new(0, 28, 0, 28)
+        CloseBtn.Font = Enum.Font.GothamBold
+        CloseBtn.Text = "X"
+        CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        CloseBtn.TextSize = 11
+        Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 6)
+        CloseBtn.MouseButton1Click:Connect(function() ConfirmBox.Visible = true end)
+
+        -- Pestañas
+        local TabCombat = Instance.new("TextButton", MainMenu)
+        TabCombat.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+        TabCombat.Position = UDim2.new(0.03, 0, 0.14, 0)
+        TabCombat.Size = UDim2.new(0.22, 0, 0, 25)
+        TabCombat.Font = Enum.Font.GothamBold
+        TabCombat.Text = "Combate"
+        TabCombat.TextColor3 = Color3.fromRGB(0, 230, 118)
+        TabCombat.TextSize = 9
+        Instance.new("UICorner", TabCombat).CornerRadius = UDim.new(0, 6)
+
+        local TabVisual = Instance.new("TextButton", MainMenu)
+        TabVisual.BackgroundColor3 = Color3.fromRGB(25, 28, 34)
+        TabVisual.Position = UDim2.new(0.27, 0, 0.14, 0)
+        TabVisual.Size = UDim2.new(0.22, 0, 0, 25)
+        TabVisual.Font = Enum.Font.GothamBold
+        TabVisual.Text = "Visuales"
+        TabVisual.TextColor3 = Color3.fromRGB(160, 160, 160)
+        TabVisual.TextSize = 9
+        Instance.new("UICorner", TabVisual).CornerRadius = UDim.new(0, 6)
+
+        local TabCreds = Instance.new("TextButton", MainMenu)
+        TabCreds.BackgroundColor3 = Color3.fromRGB(25, 28, 34)
+        TabCreds.Position = UDim2.new(0.51, 0, 0.14, 0)
+        TabCreds.Size = UDim2.new(0.22, 0, 0, 25)
+        TabCreds.Font = Enum.Font.GothamBold
+        TabCreds.Text = "Créditos"
+        TabCreds.TextColor3 = Color3.fromRGB(160, 160, 160)
+        TabCreds.TextSize = 9
+        Instance.new("UICorner", TabCreds).CornerRadius = UDim.new(0, 6)
+
+        local TabDiscord = Instance.new("TextButton", MainMenu)
+        TabDiscord.BackgroundColor3 = Color3.fromRGB(25, 28, 34)
+        TabDiscord.Position = UDim2.new(0.75, 0, 0.14, 0)
+        TabDiscord.Size = UDim2.new(0.22, 0, 0, 25)
+        TabDiscord.Font = Enum.Font.GothamBold
+        TabDiscord.Text = "Discord"
+        TabDiscord.TextColor3 = Color3.fromRGB(160, 160, 160)
+        TabDiscord.TextSize = 9
+        Instance.new("UICorner", TabDiscord).CornerRadius = UDim.new(0, 6)
+
+        local ContainerCombat = Instance.new("Frame", MainMenu)
+        ContainerCombat.BackgroundTransparency = 1
+        ContainerCombat.Position = UDim2.new(0.03, 0, 0.23, 0)
+        ContainerCombat.Size = UDim2.new(0.94, 0, 0.74, 0)
+        ContainerCombat.Visible = true
+
+        local ContainerVisual = Instance.new("Frame", MainMenu)
+        ContainerVisual.BackgroundTransparency = 1
+        ContainerVisual.Position = UDim2.new(0.03, 0, 0.23, 0)
+        ContainerVisual.Size = UDim2.new(0.94, 0, 0.74, 0)
+        ContainerVisual.Visible = false
+
+        local ContainerCreds = Instance.new("Frame", MainMenu)
+        ContainerCreds.BackgroundTransparency = 1
+        ContainerCreds.Position = UDim2.new(0.03, 0, 0.23, 0)
+        ContainerCreds.Size = UDim2.new(0.94, 0, 0.74, 0)
+        ContainerCreds.Visible = false
+
+        local ContainerDiscord = Instance.new("Frame", MainMenu)
+        ContainerDiscord.BackgroundTransparency = 1
+        ContainerDiscord.Position = UDim2.new(0.03, 0, 0.23, 0)
+        ContainerDiscord.Size = UDim2.new(0.94, 0, 0.74, 0)
+        ContainerDiscord.Visible = false
+
+        MinBtn.MouseButton1Click:Connect(function()
+            Minimized = not Minimized
+            ContainerCombat.Visible = not Minimized and TabCombat.TextColor3 == Color3.fromRGB(0, 230, 118)
+            ContainerVisual.Visible = not Minimized and TabVisual.TextColor3 == Color3.fromRGB(0, 230, 118)
+            ContainerCreds.Visible = not Minimized and TabCreds.TextColor3 == Color3.fromRGB(0, 230, 118)
+            ContainerDiscord.Visible = not Minimized and TabDiscord.TextColor3 == Color3.fromRGB(0, 230, 118)
+            TabCombat.Visible = not Minimized
+            TabVisual.Visible = not Minimized
+            TabCreds.Visible = not Minimized
+            TabDiscord.Visible = not Minimized
+            MainMenu.Size = Minimized and UDim2.new(0, 360, 0, 42) or UDim2.new(0, 360, 0, 380)
+            MinBtn.Text = Minimized and "+" or "-"
+        end)
+
+        TabCombat.MouseButton1Click:Connect(function()
+            ContainerCombat.Visible = true; ContainerVisual.Visible = false; ContainerCreds.Visible = false; ContainerDiscord.Visible = false
+            TabCombat.BackgroundColor3 = Color3.fromRGB(30, 35, 42); TabCombat.TextColor3 = Color3.fromRGB(0, 230, 118)
+            TabVisual.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabVisual.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabCreds.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabCreds.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabDiscord.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabDiscord.TextColor3 = Color3.fromRGB(160, 160, 160)
+        end)
+
+        TabVisual.MouseButton1Click:Connect(function()
+            ContainerCombat.Visible = false; ContainerVisual.Visible = true; ContainerCreds.Visible = false; ContainerDiscord.Visible = false
+            TabCombat.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabCombat.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabVisual.BackgroundColor3 = Color3.fromRGB(30, 35, 42); TabVisual.TextColor3 = Color3.fromRGB(0, 230, 118)
+            TabCreds.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabCreds.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabDiscord.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabDiscord.TextColor3 = Color3.fromRGB(160, 160, 160)
+        end)
+
+        TabCreds.MouseButton1Click:Connect(function()
+            ContainerCombat.Visible = false; ContainerVisual.Visible = false; ContainerCreds.Visible = true; ContainerDiscord.Visible = false
+            TabCombat.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabCombat.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabVisual.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabVisual.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabCreds.BackgroundColor3 = Color3.fromRGB(30, 35, 42); TabCreds.TextColor3 = Color3.fromRGB(0, 230, 118)
+            TabDiscord.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabDiscord.TextColor3 = Color3.fromRGB(160, 160, 160)
+        end)
+
+        TabDiscord.MouseButton1Click:Connect(function()
+            ContainerCombat.Visible = false; ContainerVisual.Visible = false; ContainerCreds.Visible = false; ContainerDiscord.Visible = true
+            TabCombat.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabCombat.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabVisual.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabVisual.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabCreds.BackgroundColor3 = Color3.fromRGB(25, 28, 34); TabCreds.TextColor3 = Color3.fromRGB(160, 160, 160)
+            TabDiscord.BackgroundColor3 = Color3.fromRGB(30, 35, 42); TabDiscord.TextColor3 = Color3.fromRGB(0, 230, 118)
+        end)
+
+        -- --- OPCIONES DE COMBATE ---
+        local AimbotEnabled = false
+        local TargetPart = "Head"
+        local AutoShoot = false
+
+        local BtnAim = Instance.new("TextButton", ContainerCombat)
+        BtnAim.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+        BtnAim.Size = UDim2.new(0.55, 0, 0, 28)
+        BtnAim.Font = Enum.Font.GothamBold
+        BtnAim.Text = "Aimbot (Zombies/NPCs): OFF"
+        BtnAim.TextColor3 = Color3.fromRGB(255, 90, 90)
+        BtnAim.TextSize = 9
+        Instance.new("UICorner", BtnAim)
+        BtnAim.MouseButton1Click:Connect(function()
+            AimbotEnabled = not AimbotEnabled
+            BtnAim.Text = AimbotEnabled and "Aimbot (Zombies/NPCs): ON" or "Aimbot (Zombies/NPCs): OFF"
+            BtnAim.TextColor3 = AimbotEnabled and Color3.fromRGB(0, 230, 118) or Color3.fromRGB(255, 90, 90)
+        end)
+
+        local PartDropdownBtn = Instance.new("TextButton", ContainerCombat)
+        PartDropdownBtn.BackgroundColor3 = Color3.fromRGB(40, 45, 55)
+        PartDropdownBtn.Position = UDim2.new(0.58, 0, 0, 0)
+        PartDropdownBtn.Size = UDim2.new(0.42, 0, 0, 28)
+        PartDropdownBtn.Font = Enum.Font.GothamBold
+        PartDropdownBtn.Text = "Parte: Cabeza ▾"
+        PartDropdownBtn.TextColor3 = Color3.fromRGB(255, 215, 0)
+        PartDropdownBtn.TextSize = 9
+        Instance.new("UICorner", PartDropdownBtn)
+
+        local DropdownList = Instance.new("Frame", ContainerCombat)
+        DropdownList.BackgroundColor3 = Color3.fromRGB(20, 25, 32)
+        DropdownList.Position = UDim2.new(0.58, 0, 0, 30)
+        DropdownList.Size = UDim2.new(0.42, 0, 0, 80)
+        DropdownList.Visible = false
+        DropdownList.ZIndex = 5
+        Instance.new("UICorner", DropdownList).CornerRadius = UDim.new(0, 6)
+        Instance.new("UIStroke", DropdownList).Color = Color3.fromRGB(0, 230, 118)
+
+        local function createOption(name, partVal, yPos)
+            local opt = Instance.new("TextButton", DropdownList)
+            opt.BackgroundTransparency = 1
+            opt.Position = UDim2.new(0, 0, yPos, 0)
+            opt.Size = UDim2.new(1, 0, 0, 26)
+            opt.Font = Enum.Font.GothamMedium
+            opt.Text = name
+            opt.TextColor3 = Color3.fromRGB(255, 255, 255)
+            opt.TextSize = 9
+            opt.ZIndex = 6
+            opt.MouseButton1Click:Connect(function()
+                TargetPart = partVal
+                PartDropdownBtn.Text = "Parte: " .. name .. " ▾"
+                DropdownList.Visible = false
+            end)
+        end
+        createOption("Cabeza", "Head", 0)
+        createOption("Torso", "UpperTorso", 0.33)
+        createOption("Piernas", "LeftLowerLeg", 0.66)
+
+        PartDropdownBtn.MouseButton1Click:Connect(function()
+            DropdownList.Visible = not DropdownList.Visible
+        end)
+
+        local BtnShoot = Instance.new("TextButton", ContainerCombat)
+        BtnShoot.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+        BtnShoot.Position = UDim2.new(0, 0, 0.16, 0)
+        BtnShoot.Size = UDim2.new(1, 0, 0, 28)
+        BtnShoot.Font = Enum.Font.GothamBold
+        BtnShoot.Text = "Auto-Shoot (Disparo Automático): OFF"
+        BtnShoot.TextColor3 = Color3.fromRGB(255, 90, 90)
+        BtnShoot.TextSize = 10
+        Instance.new("UICorner", BtnShoot)
+        BtnShoot.MouseButton1Click:Connect(function()
+            AutoShoot = not AutoShoot
+            BtnShoot.Text = AutoShoot and "Auto-Shoot (Disparo Automático): ON" or "Auto-Shoot (Disparo Automático): OFF"
+            BtnShoot.TextColor3 = AutoShoot and Color3.fromRGB(0, 230, 118) or Color3.fromRGB(255, 90, 90)
+        end)
+
+        -- FOV GUI Visual Centrado Perfectamente
+        local FOVEnabled = false
+        local FOVRgb = false
+        local FOVRadius = 130
+        local FOVType = "Circle"
+
+        local FOVGuiHolder = Instance.new("ScreenGui", CoreGui)
+        FOVGuiHolder.Name = "ZetaFOVVisual"
+        FOVGuiHolder.ResetOnSpawn = false
+        
+        local FOVFrameUI = Instance.new("Frame", FOVGuiHolder)
+        FOVFrameUI.BackgroundTransparency = 1
+        FOVFrameUI.AnchorPoint = Vector2.new(0.5, 0.5)
+        FOVFrameUI.Position = UDim2.new(0.5, 0, 0.5, 0)
+        FOVFrameUI.Size = UDim2.new(0, FOVRadius*2, 0, FOVRadius*2)
+        
+        local UIStrokeFOV = Instance.new("UIStroke", FOVFrameUI)
+        UIStrokeFOV.Thickness = 2
+        UIStrokeFOV.Color = Color3.fromRGB(0, 230, 118)
+        local UICornerFOV = Instance.new("UICorner", FOVFrameUI)
+        UICornerFOV.CornerRadius = UDim.new(1, 0)
+
+        local FOVBtn = Instance.new("TextButton", ContainerCombat)
+        FOVBtn.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+        FOVBtn.Position = UDim2.new(0, 0, 0.32, 0)
+        FOVBtn.Size = UDim2.new(0.55, 0, 0, 26)
+        FOVBtn.Font = Enum.Font.GothamBold
+        FOVBtn.Text = "FOV Visual: OFF"
+        FOVBtn.TextColor3 = Color3.fromRGB(255, 90, 90)
+        FOVBtn.TextSize = 9
+        Instance.new("UICorner", FOVBtn)
+        FOVBtn.MouseButton1Click:Connect(function()
+            FOVEnabled = not FOVEnabled
+            FOVGuiHolder.Enabled = FOVEnabled
+            FOVBtn.Text = FOVEnabled and "FOV Visual: ON" or "FOV Visual: OFF"
+            FOVBtn.TextColor3 = FOVEnabled and Color3.fromRGB(0, 230, 118) or Color3.fromRGB(255, 90, 90)
+        end)
+        FOVGuiHolder.Enabled = false
+
+        local ShapeDropdownBtn = Instance.new("TextButton", ContainerCombat)
+        ShapeDropdownBtn.BackgroundColor3 = Color3.fromRGB(40, 45, 55)
+        ShapeDropdownBtn.Position = UDim2.new(0.58, 0, 0.32, 0)
+        ShapeDropdownBtn.Size = UDim2.new(0.42, 0, 0, 26)
+        ShapeDropdownBtn.Font = Enum.Font.GothamBold
+        ShapeDropdownBtn.Text = "Forma: Círculo ▾"
+        ShapeDropdownBtn.TextColor3 = Color3.fromRGB(0, 230, 118)
+        ShapeDropdownBtn.TextSize = 9
+        Instance.new("UICorner", ShapeDropdownBtn)
+
+        local ShapeDropdownList = Instance.new("Frame", ContainerCombat)
+        ShapeDropdownList.BackgroundColor3 = Color3.fromRGB(20, 25, 32)
+        ShapeDropdownList.Position = UDim2.new(0.58, 0, 0.32, 28)
+        ShapeDropdownList.Size = UDim2.new(0.42, 0, 0, 56)
+        ShapeDropdownList.Visible = false
+        ShapeDropdownList.ZIndex = 5
+        Instance.new("UICorner", ShapeDropdownList).CornerRadius = UDim.new(0, 6)
+        Instance.new("UIStroke", ShapeDropdownList).Color = Color3.fromRGB(0, 230, 118)
+
+        local function createShapeOption(name, typeVal, yPos)
+            local opt = Instance.new("TextButton", ShapeDropdownList)
+            opt.BackgroundTransparency = 1
+            opt.Position = UDim2.new(0, 0, yPos, 0)
+            opt.Size = UDim2.new(1, 0, 0, 26)
+            opt.Font = Enum.Font.GothamMedium
+            opt.Text = name
+            opt.TextColor3 = Color3.fromRGB(255, 255, 255)
+            opt.TextSize = 9
+            opt.ZIndex = 6
+            opt.MouseButton1Click:Connect(function()
+                FOVType = typeVal
+                ShapeDropdownBtn.Text = "Forma: " .. name .. " ▾"
+                ShapeDropdownList.Visible = false
+                if typeVal == "Circle" then
+                    UICornerFOV.CornerRadius = UDim.new(1, 0)
+                elseif typeVal == "Square" then
+                    UICornerFOV.CornerRadius = UDim.new(0, 0)
+                end
+            end)
+        end
+        createShapeOption("Círculo", "Circle", 0)
+        createShapeOption("Cuadrado", "Square", 0.5)
+
+        ShapeDropdownBtn.MouseButton1Click:Connect(function()
+            ShapeDropdownList.Visible = not ShapeDropdownList.Visible
+        end)
+
+        local RGBFovBtn = Instance.new("TextButton", ContainerCombat)
+        RGBFovBtn.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+        RGBFovBtn.Position = UDim2.new(0, 0, 0.47, 0)
+        RGBFovBtn.Size = UDim2.new(1, 0, 0, 26)
+        RGBFovBtn.Font = Enum.Font.GothamBold
+        RGBFovBtn.Text = "FOV RGB Dinámico: OFF"
+        RGBFovBtn.TextColor3 = Color3.fromRGB(255, 90, 90)
+        RGBFovBtn.TextSize = 9
+        Instance.new("UICorner", RGBFovBtn)
+        RGBFovBtn.MouseButton1Click:Connect(function()
+            FOVRgb = not FOVRgb
+            RGBFovBtn.Text = FOVRgb and "FOV RGB Dinámico: ON" or "FOV RGB Dinámico: OFF"
+            RGBFovBtn.TextColor3 = FOVRgb and Color3.fromRGB(0, 230, 118) or Color3.fromRGB(255, 90, 90)
+        end)
+
+        local SliderLabel = Instance.new("TextLabel", ContainerCombat)
+        SliderLabel.BackgroundTransparency = 1
+        SliderLabel.Position = UDim2.new(0, 0, 0.62, 0)
+        SliderLabel.Size = UDim2.new(1, 0, 0, 16)
+        SliderLabel.Font = Enum.Font.GothamBold
+        SliderLabel.Text = "Tamaño FOV Radio: " .. FOVRadius
+        SliderLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        SliderLabel.TextSize = 9
+
+        local SliderBack = Instance.new("Frame", ContainerCombat)
+        SliderBack.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+        SliderBack.Position = UDim2.new(0, 0, 0.77, 0)
+        SliderBack.Size = UDim2.new(1, 0, 0, 10)
+        Instance.new("UICorner", SliderBack).CornerRadius = UDim.new(1, 0)
+
+        local SliderFill = Instance.new("Frame", SliderBack)
+        SliderFill.BackgroundColor3 = Color3.fromRGB(0, 230, 118)
+        SliderFill.Size = UDim2.new(FOVRadius / 300, 0, 1, 0)
+        Instance.new("UICorner", SliderFill).CornerRadius = UDim.new(1, 0)
+
+        local draggingSlider = false
+        SliderBack.InputBegan:Connect(function(inp)
+            if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then
+                draggingSlider = true
+            end
+        end)
+        UserInputService.InputEnded:Connect(function(inp)
+            if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then
+                draggingSlider = false
+            end
+        end)
+        UserInputService.InputChanged:Connect(function(inp)
+            if draggingSlider and (inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch) then
+                local pos = math.clamp((inp.Position.X - SliderBack.AbsolutePosition.X) / SliderBack.AbsoluteSize.X, 0, 1)
+                SliderFill.Size = UDim2.new(pos, 0, 1, 0)
+                FOVRadius = math.floor(pos * 250) + 20
+                SliderLabel.Text = "Tamaño FOV Radio: " .. FOVRadius
+            end
+        end)
+
+        -- --- OPCIONES DE VISUALES ---
+        local WallhackEnabled = false
+        local WHColorMode = "Green"
+
+        local WHBtn = Instance.new("TextButton", ContainerVisual)
+        WHBtn.BackgroundColor3 = Color3.fromRGB(30, 35, 42)
+        WHBtn.Size = UDim2.new(0.55, 0, 0, 32)
+        WHBtn.Font = Enum.Font.GothamBold
+        WHBtn.Text = "Wallhack (Chams): OFF"
+        WHBtn.TextColor3 = Color3.fromRGB(255, 90, 90)
+        WHBtn.TextSize = 10
+        Instance.new("UICorner", WHBtn)
+        WHBtn.MouseButton1Click:Connect(function()
+            WallhackEnabled = not WallhackEnabled
+            WHBtn.Text = WallhackEnabled and "Wallhack (Chams): ON" or "Wallhack (Chams): OFF"
+            WHBtn.TextColor3 = WallhackEnabled and Color3.fromRGB(0, 230, 118) or Color3.fromRGB(255, 90, 90)
+        end)
+
+        local WHDropdownBtn = Instance.new("TextButton", ContainerVisual)
+        WHDropdownBtn.BackgroundColor3 = Color3.fromRGB(40, 45, 55)
+        WHDropdownBtn.Position = UDim2.new(0.58, 0, 0, 0)
+        WHDropdownBtn.Size = UDim2.new(0.42, 0, 0, 32)
+        WHDropdownBtn.Font = Enum.Font.GothamBold
+        WHDropdownBtn.Text = "Color: Verde ▾"
+        WHDropdownBtn.TextColor3 = Color3.fromRGB(0, 230, 118)
+        WHDropdownBtn.TextSize = 9
+        Instance.new("UICorner", WHDropdownBtn)
+
+        local WHDropdownList = Instance.new("Frame", ContainerVisual)
+        WHDropdownList.BackgroundColor3 = Color3.fromRGB(20, 25, 32)
+        WHDropdownList.Position = UDim2.new(0.58, 0, 0, 34)
+        WHDropdownList.Size = UDim2.new(0.42, 0, 0, 100)
+        WHDropdownList.Visible = false
+        WHDropdownList.ZIndex = 5
+        Instance.new("UICorner", WHDropdownList).CornerRadius = UDim.new(0, 6)
+        Instance.new("UIStroke", WHDropdownList).Color = Color3.fromRGB(0, 230, 118)
+
+        local function createWHOption(name, modeVal, yPos, col)
+            local opt = Instance.new("TextButton", WHDropdownList)
+            opt.BackgroundTransparency = 1
+            opt.Position = UDim2.new(0, 0, yPos, 0)
+            opt.Size = UDim2.new(1, 0, 0, 25)
+            opt.Font = Enum.Font.GothamMedium
+            opt.Text = name
+            opt.TextColor3 = col
+            opt.TextSize = 9
+            opt.ZIndex = 6
+            opt.MouseButton1Click:Connect(function()
+                WHColorMode = modeVal
+                WHDropdownBtn.Text = "Color: " .. name .. " ▾"
+                WHDropdownBtn.TextColor3 = col
+                WHDropdownList.Visible = false
+            end)
+        end
+        createWHOption("Verde", "Green", 0, Color3.fromRGB(0, 230, 118))
+        createWHOption("Rojo", "Red", 0.25, Color3.fromRGB(255, 50, 50))
+        createWHOption("Azul", "Blue", 0.50, Color3.fromRGB(50, 150, 255))
+        createWHOption("RGB", "RGB", 0.75, Color3.fromRGB(255, 215, 0))
+
+        WHDropdownBtn.MouseButton1Click:Connect(function()
+            WHDropdownList.Visible = not WHDropdownList.Visible
+        end)
+
+        -- --- PESTAÑA CRÉDITOS ---
+        local CredsScroll = Instance.new("ScrollingFrame", ContainerCreds)
+        CredsScroll.BackgroundTransparency = 1
+        CredsScroll.Size = UDim2.new(1, 0, 1, 0)
+        CredsScroll.CanvasSize = UDim2.new(0, 0, 2.5, 0)
+        CredsScroll.ScrollBarThickness = 4
+
+        local CredsText = Instance.new("TextLabel", CredsScroll)
+        CredsText.BackgroundTransparency = 1
+        CredsText.Size = UDim2.new(1, -10, 1, 0)
+        CredsText.Font = Enum.Font.GothamMedium
+        CredsText.TextWrapped = true
+        CredsText.TextXAlignment = Enum.TextXAlignment.Left
+        CredsText.TextYAlignment = Enum.TextYAlignment.Top
+        CredsText.TextColor3 = Color3.fromRGB(220, 220, 220)
+        CredsText.TextSize = 10
+        CredsText.Text = [[⚡ BENVENIDOS AL NÚCLEO OFICIAL DE ZETA HUB V1.5 ⚡
+
+[+] ¿QUIÉNES SOMOS Y NUESTRA FILOSOFÍA?
+Somos Zeta Hub (@zeta hub), un equipo especializado en el desarrollo de scripts de alto rendimiento y herramientas de combate optimizadas exclusivamente para Roblox.
+
+[+] MÓDULO CAZADOR DE ZOMBIS Y NPCS
+Esta edición incluye rastreo avanzado de alta velocidad para enfilar automáticamente la mira hacia cualquier NPC, monstruo o zombi en el mapa dentro de tu radio FOV. ¡Ninguna horda podrá escapar de tu poder!]]
+
+        -- --- PESTAÑA DISCORD ---
+        local DiscInfo = Instance.new("TextLabel", ContainerDiscord)
+        DiscInfo.BackgroundTransparency = 1
+        DiscInfo.Position = UDim2.new(0, 0, 0.1, 0)
+        DiscInfo.Size = UDim2.new(1, 0, 0, 50)
+        DiscInfo.Font = Enum.Font.GothamBold
+        DiscInfo.Text = "¡Únete a la comunidad oficial de Zeta Hub!\nSoporte, actualizaciones y más scripts."
+        DiscInfo.TextColor3 = Color3.fromRGB(200, 200, 200)
+        DiscInfo.TextSize = 10
+
+        local DiscBtn = Instance.new("TextButton", ContainerDiscord)
+        DiscBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        DiscBtn.Position = UDim2.new(0.1, 0, 0.45, 0)
+        DiscBtn.Size = UDim2.new(0.8, 0, 0, 36)
+        DiscBtn.Font = Enum.Font.GothamBold
+        DiscBtn.Text = "Copiar Link de Discord"
+        DiscBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        DiscBtn.TextSize = 11
+        Instance.new("UICorner", DiscBtn).CornerRadius = UDim.new(0, 8)
+        DiscBtn.MouseButton1Click:Connect(function()
+            if setclipboard then setclipboard(DiscordInvite) end
+            DiscBtn.Text = "¡Link copiado al portapapeles!"
+            task.wait(2)
+            DiscBtn.Text = "Copiar Link de Discord"
+        end)
+
+        -- // MOTOR LETA DE AIMBOT PARA ZOMBIS, MOBS Y NPCS // --
+        local hueVal = 0
+        RunService.RenderStepped:Connect(function()
+            hueVal = (hueVal + 0.01) % 1
+            local currentRGBColor = Color3.fromHSV(hueVal, 1, 1)
+
+            FOVFrameUI.Size = UDim2.new(0, FOVRadius * 2, 0, FOVRadius * 2)
+            UIStrokeFOV.Color = FOVRgb and currentRGBColor or Color3.fromRGB(0, 230, 118)
+
+            if AimbotEnabled then
+                local closestTarget, shortestDist = nil, FOVRadius
+
+                -- Barrido masivo optimizado para encontrar cualquier NPC o Zombi con vida en todo el espacio de trabajo
+                for _, obj in ipairs(workspace:GetDescendants()) do
+                    if obj:IsA("Model") and obj ~= LocalPlayer.Character then
+                        local humanoid = obj:FindFirstChildOfClass("Humanoid")
+                        local rootPart = obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChild("Head")
+
+                        if humanoid and rootPart and humanoid.Health > 0 then
+                            -- Evitar seleccionarte a ti mismo o a compañeros si estás en equipo de jugadores
+                            local isPlayer = Players:GetPlayerFromCharacter(obj)
+                            local validTarget = true
+
+                            if isPlayer then
+                                if isPlayer == LocalPlayer or (isPlayer.Team and LocalPlayer.Team and isPlayer.Team == LocalPlayer.Team) then
+                                    validTarget = false
+                                end
+                            end
+
+                            if validTarget then
+                                local targetPartObj = obj:FindFirstChild(TargetPart) or rootPart
+                                if targetPartObj then
+                                    local pos, onScreen = Camera:WorldToViewportPoint(targetPartObj.Position)
+                                    if onScreen then
+                                        local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+                                        local dist = (Vector2.new(pos.X, pos.Y) - screenCenter).Magnitude
+                                        if dist < shortestDist then
+                                            shortestDist = dist
+                                            closestTarget = targetPartObj
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+
+                -- Fijar la mira y disparar automáticamente al zombi/NPC detectado
+                if closestTarget then
+                    local targetCF = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
+                    Camera.CFrame = Camera.CFrame:Lerp(targetCF, 0.45) -- Velocidad de rastreo letal y fluida
+
+                    if AutoShoot then
+                        pcall(function()
+                            VirtualUser:Button1Down(Vector2.new(0,0))
+                            task.wait(0.04)
+                            VirtualUser:Button1Up(Vector2.new(0,0))
+                        end)
+                    end
+                end
+            end
+
+            -- Wallhack Chams sincronizado para resaltar zombis y enemigos
+            local finalWHColor = Color3.fromRGB(0, 230, 118)
+            if WHColorMode == "Red" then finalWHColor = Color3.fromRGB(255, 50, 50)
+            elseif WHColorMode == "Blue" then finalWHColor = Color3.fromRGB(50, 150, 255)
+            elseif WHColorMode == "RGB" then finalWHColor = currentRGBColor end
+
+            for _, obj in ipairs(workspace:GetDescendants()) do
+                if obj:IsA("Model") and obj ~= LocalPlayer.Character then
+                    local humanoid = obj:FindFirstChildOfClass("Humanoid")
+                    if humanoid and humanoid.Health > 0 then
+                        if WallhackEnabled then
+                            if not obj:FindFirstChild("ZetaZombieHL") then
+                                local hl = Instance.new("Highlight")
+                                hl.Name = "ZetaZombieHL"
+                                hl.Adornee = obj
+                                hl.FillColor = finalWHColor
+                                hl.OutlineColor = Color3.fromRGB(255, 255, 255)
+                                hl.Parent = obj
+                            else
+                                obj.ZetaZombieHL.FillColor = finalWHColor
+                            end
+                        else
+                            if obj:FindFirstChild("ZetaZombieHL") then
+                                obj.ZetaZombieHL:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+
+        task.delay(4, function()
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "⚠️ ZETA ZOMBIE DESTROYER",
+                Text = "Modo de exterminio de hordas activo.",
+                Duration = 7
+            })
+        end)
+
+    else
+        VerifyBtn.Text = "[-] KEY INCORRECTA [-]"
+        VerifyBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+        task.wait(1.5)
+        VerifyBtn.Text = "[ ACCEDER AL SISTEMA ]"
+        VerifyBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 50)
+    end
+end)
